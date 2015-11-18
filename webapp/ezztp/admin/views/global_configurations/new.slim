@@ -1,0 +1,7 @@
+ul class="nav nav-tabs"
+  li = link_to tag_icon(:list, pat(:list)), url(:global_configurations, :index)
+  li class="active" = link_to tag_icon(:plus, pat(:new)), url(:global_configurations, :new)
+
+div class="tabs-content"
+  = form_for :global_configuration, url(:global_configurations, :create), :class => 'form-horizontal' do |f|
+    = partial 'global_configurations/form', :locals => { :f => f }

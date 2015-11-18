@@ -1,0 +1,25 @@
+- error = @image.errors.include?(:model)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :model, :class => 'control-label'
+  div class='controls'
+    = f.text_field :model, :class => 'form-control input-large input-with-feedback', :autofocus => true
+    span class='help-inline' = error ? f.error_message_on(:model, :class => 'text-error') : pat(:example)
+- error = @image.errors.include?(:version)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :version, :class => 'control-label'
+  div class='controls'
+    = f.text_field :version, :class => 'form-control input-large input-with-feedback'
+    span class='help-inline' = error ? f.error_message_on(:version, :class => 'text-error') : pat(:example)
+- error = @image.errors.include?(:file_name)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :file_name, :class => 'control-label'
+  div class='controls'
+    = f.file_field :file, :class => 'input-large input-with-feedback'
+    span class='help-inline' = error ? f.error_message_on(:file_name, :class => 'text-error') : pat(:example)
+
+div class="form-actions"
+  = f.submit pat(:save), :class => 'btn btn-primary'
+  |&nbsp;
+  = f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  |&nbsp;
+  = link_to pat(:cancel), url(:images, :index), :class => 'btn btn-default'

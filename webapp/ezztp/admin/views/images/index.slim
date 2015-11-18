@@ -1,0 +1,56 @@
+ul class="nav nav-tabs"
+  li class="active" = link_to tag_icon(:list, pat(:list)), url(:images, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:images, :new)
+
+div class="tabs-content"
+  table class="table table-striped table-hover table-condensed" id="list"
+    thead
+      tr
+        th class='header list-menu'
+          div class='dropdown'
+            a href='#' class='list-menu-toggle.dropdown-toggle dropdown-toggle' data-toggle='dropdown'
+              = tag_icon :magic
+              span class='caret'
+            ul class='list-menu dropdown-menu' role='dropdown'
+              li class='list-menu-wrapper' = link_to tag_icon('check-square-o', pat(:select_all)), '#', :id => 'select-all', :class => 'list-menu-link'
+              li class='list-menu-wrapper list-menu-wrapper-disabled' = link_to tag_icon('square-o', pat(:deselect_all)), '#', :id => 'deselect-all', :class => 'list-menu-link list-menu-link-disabled'
+              li class='list-menu-divider divider'
+              li class='list-menu-wrapper list-menu-wrapper-disabled'
+                = link_to tag_icon('trash-o', pat(:delete_selected)), '#', :id => 'delete-selected', :class => 'list-menu-link list-menu-link-disabled'
+                div class='list-menu-popover-delete-selected popover right'
+                  div class='arrow'
+                  h3 class='popover-title' = pat(:delete_selected_title)
+                  div class='popover-content'
+                    = form_tag url(:images, :destroy_many), :method => :delete do
+                      = hidden_field_tag :image_ids, :'data-delete-many-ids' => true
+                      = submit_tag  pat(:delete), :class =>'list-menu-popover-delete-selected-btn btn btn-danger btn-small'
+                      div class='btn btn-default btn-small cancel' = pat(:cancel)
+        th class='header' = mat(:image, :id)
+        th class='header' = mat(:image, :model)
+        th class='header' = mat(:image, :version)
+        th class='header' = mat(:image, :file_name)
+        th class='header' = mat(:image, :created_at)
+        th class='header' = mat(:image, :updated_at)
+        th class='header list-row-action-header'
+
+    tbody
+      -@images.each do |image|
+        tr class='list-row'
+          td class='list-column list-selectable' = check_box_tag 'image_ids[]', :value => image.id, :class => 'list-selectable-checkbox'
+          td class='list-column' = image.id
+          td class='list-column' = image.model
+          td class='list-column' = image.version
+          td class='list-column' = image.file_name
+          td class='list-column' = time_ago_in_words image.created_at
+          td class='list-column' = time_ago_in_words image.updated_at
+          td class='list-column list-row-action'
+            div class='list-row-action-wrapper'
+              = link_to tag_icon(:edit), :href => url(:images, :edit, :id => image.id), :rel => :tooltip, :title => "#{pat(:edit)} image", :class => 'list-row-action-wrapper-link'
+              = link_to tag_icon('trash-o'), :rel => :tooltip, :title => "#{pat(:delete)} image", :class => 'list-row-action-delete-one list-row-action-wrapper-link'
+              div class='popover list-row-action-popover-delete-one left'
+                div class='arrow'
+                h3 class='popover-title' = pat(:delete, :model => "image")
+                div class='popover-content'
+                  = form_tag url(:images, :destroy, :id => image.id), :method => :delete do
+                    = submit_tag pat(:delete), :class =>'list-row-action-popover-delete-one-btn btn btn-danger btn-small'
+                    div class='btn btn-default btn-small cancel' = pat(:cancel)

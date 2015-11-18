@@ -1,0 +1,61 @@
+ul class="nav nav-tabs"
+  li class="active" = link_to tag_icon(:list, pat(:list)), url(:management_switches, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:management_switches, :new)
+  li = link_to tag_icon(:flash, 'Address Calc'), url(:management_switches, :address)
+
+div class="tabs-content"
+  table class="table table-striped table-hover table-condensed" id="list"
+    thead
+      tr
+        th class='header list-menu'
+          div class='dropdown'
+            a href='#' class='list-menu-toggle.dropdown-toggle dropdown-toggle' data-toggle='dropdown'
+              = tag_icon :magic
+              span class='caret'
+            ul class='list-menu dropdown-menu' role='dropdown'
+              li class='list-menu-wrapper' = link_to tag_icon('check-square-o', pat(:select_all)), '#', :id => 'select-all', :class => 'list-menu-link'
+              li class='list-menu-wrapper list-menu-wrapper-disabled' = link_to tag_icon('square-o', pat(:deselect_all)), '#', :id => 'deselect-all', :class => 'list-menu-link list-menu-link-disabled'
+              li class='list-menu-divider divider'
+              li class='list-menu-wrapper list-menu-wrapper-disabled'
+                = link_to tag_icon('trash-o', pat(:delete_selected)), '#', :id => 'delete-selected', :class => 'list-menu-link list-menu-link-disabled'
+                div class='list-menu-popover-delete-selected popover right'
+                  div class='arrow'
+                  h3 class='popover-title' = pat(:delete_selected_title)
+                  div class='popover-content'
+                    = form_tag url(:management_switches, :destroy_many), :method => :delete do
+                      = hidden_field_tag :management_switch_ids, :'data-delete-many-ids' => true
+                      = submit_tag  pat(:delete), :class =>'list-menu-popover-delete-selected-btn btn btn-danger btn-small'
+                      div class='btn btn-default btn-small cancel' = pat(:cancel)
+        th class='header' = mat(:management_switch, :id)
+        th class='header' = mat(:management_switch, :name)
+        th class='header' = mat(:management_switch, :subscriber_id)
+        th class='header' = mat(:management_switch, :base_ip_address)
+        th class='header' = mat(:management_switch, :last_ip_address)
+        th class='header' = mat(:management_switch, :number_of_vc_member)
+        th class='header' = mat(:management_switch, :created_at)
+        th class='header' = mat(:management_switch, :updated_at)
+        th class='header list-row-action-header'
+
+    tbody
+      -@management_switches.each do |management_switch|
+        tr class='list-row'
+          td class='list-column list-selectable' = check_box_tag 'management_switch_ids[]', :value => management_switch.id, :class => 'list-selectable-checkbox'
+          td class='list-column' = management_switch.id
+          td class='list-column' = management_switch.name
+          td class='list-column' = management_switch.subscriber_id
+          td class='list-column' = management_switch.base_ip_address
+          td class='list-column' = get_addr(management_switch.base_ip_address, GlobalConfiguration.find_by(name: 'management_segment').value.to_s.split('/')[1], management_switch.number_of_vc_member.to_i - 1, 47)
+          td class='list-column' = management_switch.number_of_vc_member
+          td class='list-column' = time_ago_in_words management_switch.created_at
+          td class='list-column' = time_ago_in_words management_switch.updated_at
+          td class='list-column list-row-action'
+            div class='list-row-action-wrapper'
+              = link_to tag_icon(:edit), :href => url(:management_switches, :edit, :id => management_switch.id), :rel => :tooltip, :title => "#{pat(:edit)} management_switch", :class => 'list-row-action-wrapper-link'
+              = link_to tag_icon('trash-o'), :rel => :tooltip, :title => "#{pat(:delete)} management_switch", :class => 'list-row-action-delete-one list-row-action-wrapper-link'
+              div class='popover list-row-action-popover-delete-one left'
+                div class='arrow'
+                h3 class='popover-title' = pat(:delete, :model => "management_switch")
+                div class='popover-content'
+                  = form_tag url(:management_switches, :destroy, :id => management_switch.id), :method => :delete do
+                    = submit_tag pat(:delete), :class =>'list-row-action-popover-delete-one-btn btn btn-danger btn-small'
+                    div class='btn btn-default btn-small cancel' = pat(:cancel)

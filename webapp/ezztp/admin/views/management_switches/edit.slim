@@ -1,0 +1,8 @@
+ul class="nav nav-tabs"
+  li = link_to tag_icon(:list, pat(:list)), url(:management_switches, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:management_switches, :new)
+  li class="active" = link_to tag_icon(:edit, pat(:edit)), url(:management_switches, :edit, :id => @management_switch.id)
+
+div class="tabs-content"
+  = form_for :management_switch, url(:management_switches, :update, :id => @management_switch.id), :method => :put, :class => 'form-horizontal' do |f|
+    = partial 'management_switches/form', :locals => { :f => f }

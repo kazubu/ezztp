@@ -1,0 +1,8 @@
+ul class="nav nav-tabs"
+  li = link_to tag_icon(:list, pat(:list)), url(:configuration_templates, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:configuration_templates, :new)
+  li class="active" = link_to tag_icon(:edit, pat(:edit)), url(:configuration_templates, :edit, :id => @configuration_template.id)
+
+div class="tabs-content"
+  = form_for :configuration_template, url(:configuration_templates, :update, :id => @configuration_template.id), :method => :put, :class => 'form-horizontal' do |f|
+    = partial 'configuration_templates/form', :locals => { :f => f }

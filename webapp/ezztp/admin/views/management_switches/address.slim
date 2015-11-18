@@ -1,0 +1,43 @@
+ul class="nav nav-tabs"
+  li = link_to tag_icon(:list, pat(:list)), url(:management_switches, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:management_switches, :new)
+  li class="active" = link_to tag_icon(:flash, 'Address Calc'), url(:management_switches, :address)
+
+div class="tabs-t"
+  = form_for :management_switch, url(:management_switches, :address), :method => :post, :class => 'form-horizontal' do |f|
+    fieldset class='control-group'
+      = f.label 'Management Switch', :class => 'control-label'
+      div class='controls'
+        - opt = @management_switches.map{|item| ["#{item.name} - #{item.subscriber_id}", item.id]} unless @management_switches.nil?
+        = f.select 'mgsw', {options: opt, :class => 'form-control input-large input-with-feedback', :selected => @mgsw}
+    fieldset class='control-group'
+      = f.label 'fpc', :class => 'control-label'
+      div class='controls'
+        = f.text_field 'fpc', :class => 'form-control input-large input-with-feedback', :value => @fpc
+    fieldset class='control-group'
+      = f.label 'port', :class => 'control-label'
+      div class='controls'
+        = f.text_field 'port', :class => 'form-control input-large input-with-feedback', :value => @port
+
+    div class="form-actions"
+      = f.submit 'Calculate', :class => 'btn btn-primary'
+      |&nbsp;
+      = link_to 'Back', '/admin/management_switches/', :class => 'btn btn-default'
+
+- if @error
+  div
+    span class='help-inline text-error'
+      = @error
+
+- if (!@management_address.nil? and @error.nil?)
+  div
+    p
+      = "Your input: #{ManagementSwitch.find(@mgsw).name} ge-#{@fpc}/0/#{@port}" unless @mgsw.nil?
+    p
+      b
+        = "Management address for selected port: #{@management_address}"
+    p
+      = "First management address of the switch: #{@first_management_address}" unless @first_management_address.nil?
+    p
+      = "Last management address of the switch: #{@last_management_address}" unless @last_management_address.nil?
+

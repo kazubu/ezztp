@@ -1,0 +1,31 @@
+#!/usr/libexec/ui/cscript
+version 1.0;
+
+ns junos = "http://xml.juniper.net/junos/*/junos";
+ns xnm = "http://xml.juniper.net/xnm/1.1/xnm";
+ns jcs = "http://xml.juniper.net/junos/commit-scripts/1.0";
+
+import "../import/junos.xsl";
+
+var $arguments = {
+  <argument> {
+    <name> "pic";
+      <description> "pic-slot number";
+  }
+  <argument> {
+    <name> "port";
+      <description> "port number";
+  }
+}
+param $interface;
+param $protocol;
+
+match / {
+  <op-script-output> {
+    var $rpc = <command> "request virtual-chassis vc-port set pic-slot " _ $pic _ " port " _ $port _ " local";
+    <output> $rpc;
+    var $out = jcs:invoke($rpc);
+    <output> $out;
+  }
+}
+

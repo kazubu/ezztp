@@ -1,0 +1,12 @@
+auto lo
+iface lo inet loopback
+
+% @interfaces.each_key{|intf|
+auto <%= intf %>
+iface <%= intf %> inet <%= @interfaces[intf][:type].to_s %>
+% if @interfaces[intf][:type] == :static
+  address <%= @interfaces[intf][:address] %>
+  netmask <%= @interfaces[intf][:netmask] %>
+% end
+
+% }

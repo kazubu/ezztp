@@ -1,0 +1,31 @@
+- error = @management_switch.errors.include?(:name)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :name, :class => 'control-label'
+  div class='controls'
+    = f.text_field :name, :class => 'form-control input-large input-with-feedback', :autofocus => true
+    span class='help-inline' = error ? f.error_message_on(:name, :class => 'text-error') : pat(:example)
+- error = @management_switch.errors.include?(:subscriber_id)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :subscriber_id, :class => 'control-label'
+  div class='controls'
+    = f.text_field :subscriber_id, :class => 'form-control input-large input-with-feedback'
+    span class='help-inline' = error ? f.error_message_on(:subscriber_id, :class => 'text-error') : pat(:example)
+- error = @management_switch.errors.include?(:base_ip_address)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :base_ip_address, :class => 'control-label'
+  div class='controls'
+    = f.text_field :base_ip_address, :class => 'form-control input-large input-with-feedback'
+    span class='help-inline' = error ? f.error_message_on(:base_ip_address, :class => 'text-error') : pat(:example)
+- error = @management_switch.errors.include?(:number_of_vc_member)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :number_of_vc_member, :class => 'control-label'
+  div class='controls'
+    = f.text_field :number_of_vc_member, :class => 'form-control input-large input-with-feedback'
+    span class='help-inline' = error ? f.error_message_on(:number_of_vc_member, :class => 'text-error') : pat(:example)
+
+div class="form-actions"
+  = f.submit pat(:save), :class => 'btn btn-primary'
+  |&nbsp;
+  = f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  |&nbsp;
+  = link_to pat(:cancel), url(:management_switches, :index), :class => 'btn btn-default'

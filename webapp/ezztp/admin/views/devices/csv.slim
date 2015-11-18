@@ -1,0 +1,38 @@
+ul class="nav nav-tabs"
+  li = link_to tag_icon(:list, pat(:list)), url(:devices, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:devices, :new)
+  li class="active" = link_to tag_icon(:upload, 'CSV'), url(:devices, :csv)
+
+h3 Export
+
+p = link_to tag_icon(:download, 'Export'), 'export.csv'
+
+h3 Import
+
+p = link_to tag_icon(:download, 'Import CSV Sample'), 'sample.csv'
+
+div class="tabs-t"
+  = form_for :device, url(:devices, :csv), :method => :post, :class => 'form-horizontal' do |f|
+    fieldset class='control-group'
+      = f.label :CSV_file, :class => 'control-label'
+      div class='controls'
+        = f.file_field :file, :class => 'input-large input-with-feedback'
+
+    div class="form-actions"
+      = f.submit 'Upload', :class => 'btn btn-primary'
+      |&nbsp;
+      = link_to 'Back', '/admin/devices/', :class => 'btn btn-default'
+
+- if @message
+  div
+    span class='help-inline'
+      - for msg in @message
+        p
+          = msg
+
+- if @error
+  div
+    span class='help-inline text-error'
+      - for err in @error
+        p
+          = err

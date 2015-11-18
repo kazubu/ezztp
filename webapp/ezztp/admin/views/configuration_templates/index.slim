@@ -1,0 +1,55 @@
+ul class="nav nav-tabs"
+  li class="active" = link_to tag_icon(:list, pat(:list)), url(:configuration_templates, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:configuration_templates, :new)
+
+div class="tabs-content"
+  table class="table table-striped table-hover table-condensed" id="list"
+    thead
+      tr
+        th class='header list-menu'
+          div class='dropdown'
+            a href='#' class='list-menu-toggle.dropdown-toggle dropdown-toggle' data-toggle='dropdown'
+              = tag_icon :magic
+              span class='caret'
+            ul class='list-menu dropdown-menu' role='dropdown'
+              li class='list-menu-wrapper' = link_to tag_icon('check-square-o', pat(:select_all)), '#', :id => 'select-all', :class => 'list-menu-link'
+              li class='list-menu-wrapper list-menu-wrapper-disabled' = link_to tag_icon('square-o', pat(:deselect_all)), '#', :id => 'deselect-all', :class => 'list-menu-link list-menu-link-disabled'
+              li class='list-menu-divider divider'
+              li class='list-menu-wrapper list-menu-wrapper-disabled'
+                = link_to tag_icon('trash-o', pat(:delete_selected)), '#', :id => 'delete-selected', :class => 'list-menu-link list-menu-link-disabled'
+                div class='list-menu-popover-delete-selected popover right'
+                  div class='arrow'
+                  h3 class='popover-title' = pat(:delete_selected_title)
+                  div class='popover-content'
+                    = form_tag url(:configuration_templates, :destroy_many), :method => :delete do
+                      = hidden_field_tag :configuration_template_ids, :'data-delete-many-ids' => true
+                      = submit_tag  pat(:delete), :class =>'list-menu-popover-delete-selected-btn btn btn-danger btn-small'
+                      div class='btn btn-default btn-small cancel' = pat(:cancel)
+        th class='header' = mat(:configuration_template, :id)
+        th class='header' = mat(:configuration_template, :name)
+        th class='header' = mat(:configuration_template, :template)
+        th class='header' = mat(:configuration_template, :created_at)
+        th class='header' = mat(:configuration_template, :updated_at)
+        th class='header list-row-action-header'
+
+    tbody
+      -@configuration_templates.each do |configuration_template|
+        tr class='list-row'
+          td class='list-column list-selectable' = check_box_tag 'configuration_template_ids[]', :value => configuration_template.id, :class => 'list-selectable-checkbox'
+          td class='list-column' = configuration_template.id
+          td class='list-column' = configuration_template.name
+          td class='list-column text_overflow' style="white-space: pre-wrap;" = configuration_template.template
+          td class='list-column' = time_ago_in_words configuration_template.created_at
+          td class='list-column' = time_ago_in_words configuration_template.updated_at
+          td class='list-column list-row-action'
+            div class='list-row-action-wrapper'
+              = link_to tag_icon('files-o'), :href => url(:configuration_templates, :new, :id => configuration_template.id), :rel => :tooltip, :title => "duplicate configuration_template", :class => 'list-row-action-wrapper-link'
+              = link_to tag_icon(:edit), :href => url(:configuration_templates, :edit, :id => configuration_template.id), :rel => :tooltip, :title => "#{pat(:edit)} configuration_template", :class => 'list-row-action-wrapper-link'
+              = link_to tag_icon('trash-o'), :rel => :tooltip, :title => "#{pat(:delete)} configuration_template", :class => 'list-row-action-delete-one list-row-action-wrapper-link'
+              div class='popover list-row-action-popover-delete-one left'
+                div class='arrow'
+                h3 class='popover-title' = pat(:delete, :model => "configuration_template")
+                div class='popover-content'
+                  = form_tag url(:configuration_templates, :destroy, :id => configuration_template.id), :method => :delete do
+                    = submit_tag pat(:delete), :class =>'list-row-action-popover-delete-one-btn btn btn-danger btn-small'
+                    div class='btn btn-default btn-small cancel' = pat(:cancel)

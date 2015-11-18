@@ -1,0 +1,9 @@
+ul class="nav nav-tabs"
+  li = link_to tag_icon(:list, pat(:list)), url(:devices, :index)
+  li = link_to tag_icon(:plus, pat(:new)), url(:devices, :new)
+  li class="active" = link_to tag_icon(:edit, pat(:edit)), url(:devices, :edit, :id => @device.id)
+  li = link_to tag_icon(:upload, 'CSV'), url(:devices, :csv)
+
+div class="tabs-content"
+  = form_for :device, url(:devices, :update, :id => @device.id), :method => :put, :class => 'form-horizontal' do |f|
+    = partial 'devices/form', :locals => { :f => f }

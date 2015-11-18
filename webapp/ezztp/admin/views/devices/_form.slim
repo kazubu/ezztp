@@ -1,0 +1,33 @@
+- error = @device.errors.include?(:keytype)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :keytype, :class => 'control-label'
+  div class='controls'
+    = f.select :keytype, {options: { "MAC Address" => "mac", "Serial Number" => "serial", "Port" => "port", "Model Name" => "model"}, :class => 'form-control input-large input-with-feedback'}
+    span class='help-inline' = error ? f.error_message_on(:keytype, :class => 'text-error') : pat(:example)
+- error = @device.errors.include?(:key)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :key, :class => 'control-label'
+  div class='controls'
+    = f.text_field :key, :class => 'form-control input-large input-with-feedback'
+    span class='help-inline' = error ? f.error_message_on(:key, :class => 'text-error') : 'Ex: dc38e1001122 (MAC), TA1234567890 (Serial), subscriber-id:ge-1/0/2.0 (Port), qfx5100-48s (Model)'
+- error = @device.errors.include?(:configuration_template_id)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :configuration_template_id, :class => 'control-label'
+  div class='controls'
+    - opt = @configuration_templates.map{|item| [item.name, item.id]} unless @configuration_templates.nil?
+    = f.select :configuration_template_id, {options: opt, :class => 'form-control input-large input-with-feedback'}
+    span class='help-inline' = error ? f.error_message_on(:configuration_template_id, :class => 'text-error') : pat(:example)
+- error = @device.errors.include?(:image_id)
+fieldset class='control-group#{error ? ' has-error' : ''}'
+  = f.label :image_id, :class => 'control-label'
+  div class='controls'
+    - opt = @images.map{|item| ["#{item.model} - #{item.version}", item.id]} unless @configuration_templates.nil?
+    = f.select :image_id, {options: opt, :class => 'form-control input-large input-with-feedback'}
+    span class='help-inline' = error ? f.error_message_on(:image_id, :class => 'text-error') : pat(:example)
+
+div class="form-actions"
+  = f.submit pat(:save), :class => 'btn btn-primary'
+  |&nbsp;
+  = f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  |&nbsp;
+  = link_to pat(:cancel), url(:devices, :index), :class => 'btn btn-default'

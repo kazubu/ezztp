@@ -1,0 +1,10 @@
+EZZTP_DEFAULT_CONFIG = {
+  :management_segment => "<%= @network %>/<%= @prefixlen %>",
+  :root_encrypted_password => "$1$YrXW4H1t$0Ry0FagjB/wMKbVM1izGf/",
+  :management_default_gateway => "<%= @default_router %>",
+  :management_dns_server => "<%= @dns_server %>",
+  :ztp_server_address => "<%= @ztp_server_ip %>",
+  :dhcp_server_interface => "<%= @ztp_ifname %>",
+  :dhcp_lease_start => "<%= @pool_range[0] %>",
+  :dhcp_lease_end => "<%= @pool_range[1] %>"
+}
